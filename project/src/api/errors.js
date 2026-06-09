@@ -43,10 +43,18 @@ function traduciTesto(testo) {
   return testo;
 }
 
+function messaggioDetail(data) {
+  const detail = data.detail ?? data.Errore;
+  if (!detail) return null;
+  if (Array.isArray(detail)) return traduciTesto(detail[0]);
+  return traduciTesto(detail);
+}
+
 export function formatApiError(data) {
   if (!data) return "Errore sconosciuto.";
   if (typeof data === "string") return traduciTesto(data);
-  if (data.detail) return traduciTesto(data.detail);
+  const detail = messaggioDetail(data);
+  if (detail) return detail;
 
   return Object.entries(data)
     .map(([field, messages]) => {

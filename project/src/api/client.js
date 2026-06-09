@@ -14,6 +14,7 @@ export async function apiRequest(path, options = {}) {
   const config = {
     ...rest,
     headers: {
+      Accept: "application/json",
       "Content-Type": "application/json",
       ...headers,
     },
