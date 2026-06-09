@@ -1,17 +1,8 @@
-const API_BASE_URL = "http://127.0.0.1:8000";
+import { formatApiError } from "./errors";
 
-export function formatApiError(data) {
-  if (!data) return "Errore sconosciuto.";
-  if (typeof data === "string") return data;
-  if (data.detail) return data.detail;
+const API_BASE_URL = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000";
 
-  return Object.entries(data)
-    .map(([field, messages]) => {
-      const text = Array.isArray(messages) ? messages.join(" ") : messages;
-      return `${field}: ${text}`;
-    })
-    .join(" ");
-}
+export { formatApiError };
 
 export async function apiRequest(path, options = {}) {
   const { token, body, headers = {}, ...rest } = options;
@@ -32,14 +23,20 @@ export async function apiRequest(path, options = {}) {
     config.body = JSON.stringify(body);
   }
 
-  const response = await fetch(`${API_BASE_URL}${path}`, config);
+  let response;
+  try {
+    response = await fetch(`${API_BASE_URL}${path}`, config);
+  } catch {
+    throw new Error("Impossibile contattare il server. Verifica la connessione.");
+  }
+
   const contentType = response.headers.get("content-type");
   const data = contentType?.includes("application/json")
     ? await response.json()
     : null;
 
   if (!response.ok) {
-    throw new Error(formatApiError(data) || `Errore ${response.status}`);
+    throw new Error(formatApiError(data) || `Errore del server (${response.status}).`);
   }
 
   return data;

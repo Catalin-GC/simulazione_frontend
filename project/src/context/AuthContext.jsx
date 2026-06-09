@@ -46,6 +46,8 @@ export function AuthProvider({ children }) {
     token,
     loading,
     isAuthenticated: !!user,
+    isResponsabile: user?.ruolo === "RESPONSABILE",
+    isDipendente: user?.ruolo === "DIPENDENTE",
     login,
     logout,
   };
