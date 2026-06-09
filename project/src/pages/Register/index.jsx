@@ -12,6 +12,7 @@ export function Register() {
     password: "",
     conferma_password: "",
   });
+
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
@@ -36,8 +37,10 @@ export function Register() {
       await register(form);
       setSuccess("Registrazione completata. Ora puoi accedere.");
       setTimeout(() => navigate("/login"), 1500);
+
     } catch (err) {
       setError(err.message || "Errore durante la registrazione.");
+
     } finally {
       setLoading(false);
     }
@@ -51,8 +54,8 @@ export function Register() {
 
         {error && (
           <div className="mb-4 rounded-lg bg-red-50 border border-red-200 text-red-700 px-4 py-3 text-sm">
-            {error}
-          </div>
+            {error}<span></span>
+          </div> 
         )}
 
         {success && (
