@@ -76,7 +76,7 @@ export function DettaglioRimborso() {
       </Link>
 
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold text-slate-800">Richiesta #{rimborso.id}</h2>
+        <h2 className="text-2xl font-bold text-slate-800">Richiesta n°{rimborso.id}</h2>
         <StatoBadge stato={rimborso.stato} label={rimborso.stato_display} />
       </div>
 
