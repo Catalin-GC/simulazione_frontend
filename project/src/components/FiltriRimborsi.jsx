@@ -20,71 +20,76 @@ export function FiltriRimborsi({
 
   return (
     <form
-      onSubmit={(e) => { e.preventDefault(); onFiltra(); }}
-      className="bg-white rounded-xl shadow-sm border border-slate-200 p-4 mb-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3"
+      onSubmit={(e) => {
+        e.preventDefault();
+        onFiltra();
+      }}
+      className="card card-pad mb-6"
     >
-      <div>
-        <label className="block text-xs font-medium text-slate-600 mb-1">Stato</label>
-        <select
-          name="stato"
-          value={filtri.stato}
-          onChange={handleChange}
-          className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
-        >
-          {STATI.map((s) => (
-            <option key={s.value} value={s.value}>{s.label}</option>
-          ))}
-        </select>
-      </div>
-
-      <div>
-        <label className="block text-xs font-medium text-slate-600 mb-1">Categoria</label>
-        <select
-          name="categoria"
-          value={filtri.categoria}
-          onChange={handleChange}
-          className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
-        >
-          <option value="">Tutte le categorie</option>
-          {categorie.map((c) => (
-            <option key={c.id} value={c.id}>{c.descrizione}</option>
-          ))}
-        </select>
-      </div>
-
-      <div>
-        <label className="block text-xs font-medium text-slate-600 mb-1">Mese</label>
-        <input
-          type="month"
-          name="mese"
-          value={filtri.mese}
-          onChange={handleChange}
-          className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
-        />
-      </div>
-
-      {showDipendente && (
+      <p className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-4">
+        Filtra richieste
+      </p>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div>
-          <label className="block text-xs font-medium text-slate-600 mb-1">Dipendente</label>
+          <label className="input-label">Stato</label>
           <select
-            name="dipendente"
-            value={filtri.dipendente}
+            name="stato"
+            value={filtri.stato}
             onChange={handleChange}
-            className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
+            className="input-field"
           >
-            <option value="">Tutti i dipendenti</option>
-            {dipendenti.map((d) => (
-              <option key={d.id} value={d.id}>{d.nome}</option>
+            {STATI.map((s) => (
+              <option key={s.value} value={s.value}>{s.label}</option>
             ))}
           </select>
         </div>
-      )}
 
-      <div className="sm:col-span-2 lg:col-span-4 flex gap-2">
-        <button
-          type="submit"
-          className="px-4 py-2 bg-slate-800 text-white text-sm rounded-lg hover:bg-slate-700"
-        >
+        <div>
+          <label className="input-label">Categoria</label>
+          <select
+            name="categoria"
+            value={filtri.categoria}
+            onChange={handleChange}
+            className="input-field"
+          >
+            <option value="">Tutte le categorie</option>
+            {categorie.map((c) => (
+              <option key={c.id} value={c.id}>{c.descrizione}</option>
+            ))}
+          </select>
+        </div>
+
+        <div>
+          <label className="input-label">Mese</label>
+          <input
+            type="month"
+            name="mese"
+            value={filtri.mese}
+            onChange={handleChange}
+            className="input-field"
+          />
+        </div>
+
+        {showDipendente && (
+          <div>
+            <label className="input-label">Dipendente</label>
+            <select
+              name="dipendente"
+              value={filtri.dipendente}
+              onChange={handleChange}
+              className="input-field"
+            >
+              <option value="">Tutti i dipendenti</option>
+              {dipendenti.map((d) => (
+                <option key={d.id} value={d.id}>{d.nome}</option>
+              ))}
+            </select>
+          </div>
+        )}
+      </div>
+
+      <div className="flex gap-2 mt-4 pt-4 border-t border-slate-100">
+        <button type="submit" className="btn btn-primary">
           Applica filtri
         </button>
         <button
@@ -93,7 +98,7 @@ export function FiltriRimborsi({
             onChange({ stato: "", categoria: "", mese: "", dipendente: "" });
             onFiltra({ stato: "", categoria: "", mese: "", dipendente: "" });
           }}
-          className="px-4 py-2 border border-slate-300 text-slate-600 text-sm rounded-lg hover:bg-slate-50"
+          className="btn btn-secondary"
         >
           Reset
         </button>

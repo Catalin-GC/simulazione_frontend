@@ -59,37 +59,49 @@ export function DettaglioRimborso() {
     }, "eliminazione");
   };
 
-  if (loading) return <p className="text-slate-500">Caricamento...</p>;
+  if (loading) {
+    return (
+      <p className="text-slate-500 font-medium tracking-wide py-16 text-center">
+        Caricamento...
+      </p>
+    );
+  }
+
   if (!rimborso) return <Alert type="error" message={error || "Richiesta non trovata."} />;
 
   const isProprietario = rimborso.dipendente === user?.id;
   const inAttesa = rimborso.stato === "IN_ATTESA";
   const approvata = rimborso.stato === "APPROVATA";
   const puoModificare = isProprietario && inAttesa && !isResponsabile;
-
   const listaUrl = isResponsabile ? "/rimborsi" : "/miei-rimborsi";
 
   return (
     <div className="max-w-2xl">
-      <Link to={listaUrl} className="text-sm text-slate-500 hover:text-slate-800 mb-4 inline-block">
-        ← Torna all'elenco
+      <Link
+        to={listaUrl}
+        className="text-xs font-bold uppercase tracking-wider text-slate-500 hover:text-slate-800 mb-6 inline-block"
+      >
+        ← Torna all&apos;elenco
       </Link>
 
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold text-slate-800">Richiesta n°{rimborso.id}</h2>
+      <div className="flex items-start justify-between gap-4 mb-8 pb-6 border-b-2 border-slate-200">
+        <div>
+          <h1 className="page-title">Richiesta #{rimborso.id}</h1>
+          <p className="page-subtitle">Dettaglio completo della richiesta</p>
+        </div>
         <StatoBadge stato={rimborso.stato} label={rimborso.stato_display} />
       </div>
 
       <Alert type="error" message={error} onClose={() => setError("")} />
       <Alert type="success" message={success} onClose={() => setSuccess("")} />
 
-      <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 space-y-4 text-sm">
+      <div className="card-accent card-pad space-y-0 text-sm">
         {isResponsabile && (
           <Riga label="Dipendente" value={rimborso.dipendente_nome} />
         )}
         <Riga label="Data spesa" value={formatData(rimborso.data_spesa)} />
         <Riga label="Categoria" value={rimborso.categoria_descrizione} />
-        <Riga label="Importo" value={formatEuro(rimborso.importo)} />
+        <Riga label="Importo" value={formatEuro(rimborso.importo)} highlight />
         <Riga label="Descrizione" value={rimborso.descrizione} />
         <Riga label="Riferimento giustificativo" value={rimborso.riferimento_giustificativo || "—"} />
         <Riga label="Data inserimento" value={formatData(rimborso.data_inserimento)} />
@@ -107,16 +119,13 @@ export function DettaglioRimborso() {
       <div className="mt-6 flex flex-wrap gap-3">
         {puoModificare && (
           <>
-            <Link
-              to={`/rimborsi/${id}/modifica`}
-              className="px-4 py-2 bg-slate-800 text-white text-sm rounded-lg hover:bg-slate-700"
-            >
+            <Link to={`/rimborsi/${id}/modifica`} className="btn btn-primary">
               Modifica
             </Link>
             <button
               onClick={handleElimina}
               disabled={!!azione}
-              className="px-4 py-2 border border-red-300 text-red-600 text-sm rounded-lg hover:bg-red-50 disabled:opacity-50"
+              className="btn btn-danger-outline"
             >
               Elimina
             </button>
@@ -128,7 +137,7 @@ export function DettaglioRimborso() {
             <button
               onClick={() => eseguiAzione(() => approvaRimborso(token, id), "approvazione")}
               disabled={!!azione}
-              className="px-4 py-2 bg-green-700 text-white text-sm rounded-lg hover:bg-green-600 disabled:opacity-50"
+              className="btn btn-success"
             >
               {azione === "approvazione" ? "..." : "Approva"}
             </button>
@@ -139,7 +148,7 @@ export function DettaglioRimborso() {
                   placeholder="Motivazione rifiuto (opzionale)"
                   value={motivazione}
                   onChange={(e) => setMotivazione(e.target.value)}
-                  className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
+                  className="input-field"
                 />
               </div>
               <button
@@ -148,7 +157,7 @@ export function DettaglioRimborso() {
                   "rifiuto"
                 )}
                 disabled={!!azione}
-                className="px-4 py-2 bg-red-600 text-white text-sm rounded-lg hover:bg-red-500 disabled:opacity-50"
+                className="btn btn-danger"
               >
                 {azione === "rifiuto" ? "..." : "Rifiuta"}
               </button>
@@ -160,7 +169,7 @@ export function DettaglioRimborso() {
           <button
             onClick={() => eseguiAzione(() => liquidaRimborso(token, id), "liquidazione")}
             disabled={!!azione}
-            className="px-4 py-2 bg-blue-700 text-white text-sm rounded-lg hover:bg-blue-600 disabled:opacity-50"
+            className="btn btn-info"
           >
             {azione === "liquidazione" ? "..." : "Registra liquidazione"}
           </button>
@@ -170,11 +179,19 @@ export function DettaglioRimborso() {
   );
 }
 
-function Riga({ label, value }) {
+function Riga({ label, value, highlight }) {
   return (
-    <div className="flex justify-between border-b border-slate-100 pb-3">
-      <span className="text-slate-500">{label}</span>
-      <span className="font-medium text-slate-800 text-right max-w-xs">{value}</span>
+    <div className="flex justify-between gap-4 py-3.5 border-b border-slate-100 last:border-0">
+      <span className="text-xs font-bold uppercase tracking-wider text-slate-500 shrink-0">
+        {label}
+      </span>
+      <span
+        className={`text-right max-w-xs ${
+          highlight ? "font-display text-xl font-bold text-slate-800" : "font-medium text-slate-800"
+        }`}
+      >
+        {value}
+      </span>
     </div>
   );
 }

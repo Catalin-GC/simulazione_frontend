@@ -1,1 +1,140 @@
-@import 'tailwindcss';
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Syne", ui-sans-serif, system-ui, sans-serif;
+}
+
+body {
+  font-family: var(--font-sans);
+  @apply text-slate-800 antialiased;
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+.app-bg {
+  background-color: #f1f5f9;
+  background-image:
+    linear-gradient(to right, rgb(148 163 184 / 0.08) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(148 163 184 / 0.08) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+.page-title {
+  font-family: var(--font-display);
+  @apply text-3xl font-bold tracking-tight text-slate-800;
+}
+
+.page-subtitle {
+  @apply text-sm text-slate-500 mt-1;
+}
+
+.card {
+  @apply bg-white border border-slate-200 shadow-sm;
+}
+
+.card-pad {
+  @apply p-6;
+}
+
+.card-accent {
+  @apply bg-white border border-slate-200 border-l-4 border-l-slate-800 shadow-sm;
+}
+
+.btn {
+  @apply inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold tracking-wide transition-all duration-200 disabled:opacity-50 disabled:pointer-events-none;
+}
+
+.btn-primary {
+  @apply bg-slate-800 text-white hover:bg-slate-700 active:scale-[0.98];
+}
+
+.btn-secondary {
+  @apply border-2 border-slate-300 text-slate-700 hover:bg-slate-50 hover:border-slate-400;
+}
+
+.btn-ghost {
+  @apply text-slate-600 hover:text-slate-800 hover:bg-slate-100;
+}
+
+.btn-success {
+  @apply bg-green-700 text-white hover:bg-green-600;
+}
+
+.btn-danger {
+  @apply bg-red-600 text-white hover:bg-red-500;
+}
+
+.btn-danger-outline {
+  @apply border-2 border-red-300 text-red-600 hover:bg-red-50;
+}
+
+.btn-info {
+  @apply bg-blue-700 text-white hover:bg-blue-600;
+}
+
+.input-field {
+  @apply w-full border-2 border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-800 placeholder:text-slate-400 transition-colors focus:border-slate-800 focus:outline-none;
+}
+
+.input-label {
+  @apply block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5;
+}
+
+.table-wrap {
+  @apply bg-white border border-slate-200 shadow-sm overflow-hidden;
+}
+
+.data-table {
+  @apply w-full text-sm;
+}
+
+.data-table thead {
+  @apply bg-slate-800 text-white;
+}
+
+.data-table th {
+  @apply text-left px-5 py-3.5 text-xs font-bold uppercase tracking-wider;
+}
+
+.data-table tbody tr {
+  @apply border-b border-slate-100 transition-colors hover:bg-slate-50;
+}
+
+.data-table td {
+  @apply px-5 py-3.5;
+}
+
+.nav-pill {
+  @apply px-3 py-2 text-sm font-medium text-slate-300 transition-colors hover:text-white;
+}
+
+.nav-pill-active {
+  @apply bg-slate-700 text-white;
+}
+
+.auth-panel {
+  @apply hidden lg:flex lg:w-5/12 bg-slate-800 text-white p-12 flex-col justify-between relative overflow-hidden;
+}
+
+.auth-panel::before {
+  content: "";
+  @apply absolute inset-0 opacity-10;
+  background-image:
+    linear-gradient(45deg, white 25%, transparent 25%),
+    linear-gradient(-45deg, white 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, white 75%),
+    linear-gradient(-45deg, transparent 75%, white 75%);
+  background-size: 24px 24px;
+  background-position: 0 0, 0 12px, 12px -12px, -12px 0;
+}
+
+.loading-screen {
+  @apply min-h-screen flex flex-col items-center justify-center gap-3 text-slate-600;
+}
+
+.loading-dot {
+  @apply w-2 h-2 rounded-full bg-slate-800 animate-pulse;
+}

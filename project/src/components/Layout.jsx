@@ -20,10 +20,10 @@ export function Layout() {
     { to: "/dashboard", label: "Dashboard" },
     {
       to: isResponsabile ? "/rimborsi" : "/miei-rimborsi",
-      label: isResponsabile ? "Tutte le richieste" : "I miei rimborsi",
+      label: isResponsabile ? "Richieste" : "I miei rimborsi",
     },
     ...(!isResponsabile
-      ? [{ to: "/rimborsi/nuova", label: "Nuova richiesta" }]
+      ? [{ to: "/rimborsi/nuova", label: "Nuova" }]
       : []),
     ...(isResponsabile ? [{ to: "/statistiche", label: "Statistiche" }] : []),
   ];
@@ -32,42 +32,66 @@ export function Layout() {
     location.pathname === path || location.pathname.startsWith(`${path}/`);
 
   return (
-    <div className="min-h-screen bg-slate-100 flex">
-      <aside className="w-56 bg-slate-800 text-white flex flex-col shrink-0">
-        <div className="p-5 border-b border-slate-700">
-          <h1 className="font-bold text-lg">Rimborsi Spese</h1>
-          <p className="text-slate-400 text-xs mt-1 truncate">{user?.email}</p>
-        </div>
-
-        <nav className="flex-1 p-3 space-y-1">
-          {links.map((link) => (
+    <div className="min-h-screen app-bg">
+      <header className="sticky top-0 z-50 bg-slate-800 text-white shadow-md">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="flex items-center justify-between h-16 gap-4">
             <Link
-              key={link.to}
-              to={link.to}
-              className={`block px-3 py-2 rounded-lg text-sm transition-colors ${
-                isActive(link.to)
-                  ? "bg-slate-700 text-white font-medium"
-                  : "text-slate-300 hover:bg-slate-700 hover:text-white"
-              }`}
+              to="/dashboard"
+              className="font-display text-lg font-bold tracking-widest uppercase shrink-0"
             >
-              {link.label}
+              Rimborsi
             </Link>
-          ))}
-        </nav>
 
-        <div className="p-4 border-t border-slate-700 text-xs text-slate-400">
-          <p>{user?.nome} {user?.cognome}</p>
-          <p className="mt-1">{RUOLO_LABEL[user?.ruolo]}</p>
-          <button
-            onClick={handleLogout}
-            className="mt-3 text-slate-300 hover:text-white text-sm"
-          >
-            Esci
-          </button>
+            <nav className="hidden md:flex items-center gap-1">
+              {links.map((link) => (
+                <Link
+                  key={link.to}
+                  to={link.to}
+                  className={`nav-pill rounded-sm ${
+                    isActive(link.to) ? "nav-pill-active" : ""
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </nav>
+
+            <div className="flex items-center gap-3 shrink-0">
+              <div className="hidden sm:block text-right">
+                <p className="text-sm font-semibold leading-tight">
+                  {user?.nome} {user?.cognome}
+                </p>
+                <p className="text-[11px] text-slate-400 uppercase tracking-wider">
+                  {RUOLO_LABEL[user?.ruolo]}
+                </p>
+              </div>
+              <button
+                onClick={handleLogout}
+                className="btn btn-ghost text-slate-300 hover:text-white hover:bg-slate-700 px-3 py-2"
+              >
+                Esci
+              </button>
+            </div>
+          </div>
+
+          <nav className="md:hidden flex gap-1 pb-3 overflow-x-auto">
+            {links.map((link) => (
+              <Link
+                key={link.to}
+                to={link.to}
+                className={`nav-pill rounded-sm whitespace-nowrap ${
+                  isActive(link.to) ? "nav-pill-active" : ""
+                }`}
+              >
+                {link.label}
+              </Link>
+            ))}
+          </nav>
         </div>
-      </aside>
+      </header>
 
-      <main className="flex-1 p-6 overflow-auto">
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
         <Outlet />
       </main>
     </div>

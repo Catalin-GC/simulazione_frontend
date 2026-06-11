@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { getCategorie } from "../../api/categorie";
 import { createRimborso, getRimborso, updateRimborso } from "../../api/rimborsi";
 import { Alert } from "../../components/Alert";
+import { PageHeader } from "../../components/PageHeader";
 import { useAuth } from "../../context/AuthContext";
 
 const CAMPI_VUOTI = {
@@ -83,38 +84,49 @@ export function FormRimborso() {
     }
   };
 
-  if (loading) return <p className="text-slate-500">Caricamento...</p>;
+  if (loading) {
+    return (
+      <p className="text-slate-500 font-medium tracking-wide py-16 text-center">
+        Caricamento...
+      </p>
+    );
+  }
 
   return (
     <div className="max-w-xl">
-      <h2 className="text-2xl font-bold text-slate-800 mb-6">
-        {isModifica ? "Modifica richiesta" : "Nuova richiesta di rimborso"}
-      </h2>
+      <PageHeader
+        title={isModifica ? "Modifica richiesta" : "Nuova richiesta"}
+        subtitle={
+          isModifica
+            ? "Aggiorna i dati della richiesta in attesa"
+            : "Compila il form per inserire una nuova spesa"
+        }
+      />
 
       <Alert type="error" message={error} onClose={() => setError("")} />
       <Alert type="success" message={success} />
 
-      <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 space-y-4">
+      <form onSubmit={handleSubmit} className="card-accent card-pad space-y-5">
         <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1">Data spesa *</label>
+          <label className="input-label">Data spesa *</label>
           <input
             type="date"
             name="data_spesa"
             required
             value={form.data_spesa}
             onChange={handleChange}
-            className="w-full rounded-lg border border-slate-300 px-3 py-2"
+            className="input-field"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1">Categoria *</label>
+          <label className="input-label">Categoria *</label>
           <select
             name="categoria"
             required
             value={form.categoria}
             onChange={handleChange}
-            className="w-full rounded-lg border border-slate-300 px-3 py-2"
+            className="input-field"
           >
             <option value="">Seleziona categoria</option>
             {categorie.map((c) => (
@@ -124,7 +136,7 @@ export function FormRimborso() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1">Importo (€) *</label>
+          <label className="input-label">Importo (€) *</label>
           <input
             type="number"
             name="importo"
@@ -133,43 +145,42 @@ export function FormRimborso() {
             step="0.01"
             value={form.importo}
             onChange={handleChange}
-            className="w-full rounded-lg border border-slate-300 px-3 py-2"
+            className="input-field"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1">Descrizione *</label>
+          <label className="input-label">Descrizione *</label>
           <textarea
             name="descrizione"
             required
             rows={3}
             value={form.descrizione}
             onChange={handleChange}
-            className="w-full rounded-lg border border-slate-300 px-3 py-2"
+            className="input-field resize-y"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1">Riferimento giustificativo</label>
+          <label className="input-label">Riferimento giustificativo</label>
           <input
             type="text"
             name="riferimento_giustificativo"
             value={form.riferimento_giustificativo}
             onChange={handleChange}
-            className="w-full rounded-lg border border-slate-300 px-3 py-2"
+            className="input-field"
             placeholder="Es. numero scontrino, fattura..."
           />
         </div>
 
-        <div className="flex gap-3 pt-2">
-          <button
-            type="submit"
-            disabled={saving}
-            className="px-5 py-2 bg-slate-800 text-white rounded-lg hover:bg-slate-700 disabled:opacity-50"
-          >
+        <div className="flex gap-3 pt-2 border-t border-slate-100">
+          <button type="submit" disabled={saving} className="btn btn-primary">
             {saving ? "Salvataggio..." : isModifica ? "Salva modifiche" : "Invia richiesta"}
           </button>
-          <Link to={isModifica ? `/rimborsi/${id}` : "/miei-rimborsi"} className="px-5 py-2 border border-slate-300 rounded-lg text-slate-600 hover:bg-slate-50">
+          <Link
+            to={isModifica ? `/rimborsi/${id}` : "/miei-rimborsi"}
+            className="btn btn-secondary"
+          >
             Annulla
           </Link>
         </div>
